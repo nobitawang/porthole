@@ -152,6 +152,8 @@ iFrame proxy abc.com->abc.com: forwardMessageEvent(event)
          * @param {String} targetOrigin
          */
         post: function(data, targetOrigin) {},
+        postMessage: function(data, targetOrigin) {},
+
         /**
          * Add an event listener to receive messages.
          * @public
@@ -195,6 +197,19 @@ iFrame proxy abc.com->abc.com: forwardMessageEvent(event)
         },
 
         post: function(data, targetOrigin) {
+            if (targetOrigin === undefined) {
+                targetOrigin = '*';
+            }
+            this.dispatchMessage({
+                'data' : data,
+                'sourceOrigin' : this.getOrigin(),
+                'targetOrigin' : targetOrigin,
+                'sourceWindowName' : window.name,
+                'targetWindowName' : this.getTargetWindowName()
+            });
+        },
+
+        postMessage: function(data, targetOrigin) {
             if (targetOrigin === undefined) {
                 targetOrigin = '*';
             }
